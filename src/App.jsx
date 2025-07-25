@@ -1,24 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import './App.css'
-import Login from './components/Login';
-import Register from './components/Register';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import BottomLinks from "./components/BottomLinks";
 
 function App() {
   return (
-    <BrowserRouter>
-      <h1>Metagram</h1>
-      <nav>
-        <Link to="/login">Login</Link> | <Link to="/register">Register</Link>
-      </nav>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-    </BrowserRouter>
+    <Router>
+      <div style={{ minHeight: "100vh", position: "relative" }}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+
+        {/* Fixed links at bottom */}
+        <BottomLinks />
+      </div>
+    </Router>
   );
 }
 
-export default App;
+export default App;
