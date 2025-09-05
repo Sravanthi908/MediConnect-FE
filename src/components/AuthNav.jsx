@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 
 const AuthNav = () => {
   const location = useLocation();
+
+  // ✅ Highlight Login only if path is exactly "/login"
   const isLogin = location.pathname === "/login";
 
   return (
@@ -13,6 +15,7 @@ const AuthNav = () => {
           marginRight: "1rem",
           textDecoration: isLogin ? "underline" : "none",
           fontWeight: isLogin ? "bold" : "normal",
+          color: "#007bff",
         }}
       >
         Login
@@ -22,6 +25,7 @@ const AuthNav = () => {
         style={{
           textDecoration: !isLogin ? "underline" : "none",
           fontWeight: !isLogin ? "bold" : "normal",
+          color: "#007bff",
         }}
       >
         Register

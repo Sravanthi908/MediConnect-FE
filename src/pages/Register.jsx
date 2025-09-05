@@ -5,8 +5,7 @@ import axios from "axios";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    username: "",
     password: "",
   });
 
@@ -26,10 +25,10 @@ const Register = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/register/", formData);
+      const response = await axios.post("http://127.0.0.1:8000/api/user/register/", formData);
       if (response.status === 201 || response.status === 200) {
         setMessage("✅ Registered successfully! You can now login.");
-        setFormData({ name: "", email: "", password: "" });
+        setFormData({ username: "", password: "" });
       } else {
         setError("Something went wrong. Try again.");
       }
@@ -61,19 +60,10 @@ const Register = () => {
       >
         <input
           type="text"
-          name="name"
-          placeholder="Full Name"
+          name="username"
+          placeholder="Username"
           required
-          value={formData.name}
-          onChange={handleChange}
-          style={{ padding: "0.5rem" }}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          required
-          value={formData.email}
+          value={formData.username}
           onChange={handleChange}
           style={{ padding: "0.5rem" }}
         />

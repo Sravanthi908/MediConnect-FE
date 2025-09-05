@@ -1,22 +1,25 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import SetLocation from './pages/SetLocation';
-import NearbyHospitals from './pages/NearbyHospitals';
-import HospitalDetail from './pages/HospitalDetail';
-import BookAppointment from './pages/BookAppointment';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+import HospitalDetail from "./pages/HospitalDetail";
+import BookAppointment from "./pages/BookAppointment";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        {/* Default route */}
+        <Route path="/" element={<Navigate to="/login" />} />
+
+        {/* Auth routes */}
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/set-location" element={<SetLocation />} />
-        <Route path="/hospitals" element={<NearbyHospitals />} />
+
+        {/* App routes */}
+       
         <Route path="/hospital/:id" element={<HospitalDetail />} />
-        <Route path="/book/:id" element={<BookAppointment />} />
+        <Route path="/book-appointment/:id" element={<BookAppointment />} />
       </Routes>
     </Router>
   );

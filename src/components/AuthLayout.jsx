@@ -5,7 +5,7 @@ const AuthLayout = ({ children }) => {
   return (
     <div
       style={{
-        backgroundImage: "url('https://mediconnect-hms.netlify.app/logo.jpg')",
+        backgroundImage: "url('https://mediconnect-hms.netlify.app/logo.jpg')", // ✅ make sure this image exists
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
@@ -25,7 +25,10 @@ const AuthLayout = ({ children }) => {
           maxWidth: "400px",
         }}
       >
+        {/* Navigation (Login / Register) */}
         <AuthNav />
+
+        {/* Page content (Login or Register form) */}
         {children}
       </div>
     </div>

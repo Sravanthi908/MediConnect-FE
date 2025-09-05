@@ -5,7 +5,7 @@ import axios from "axios";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",   // ✅ use username instead of email
     password: "",
   });
 
@@ -26,22 +26,21 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login/", formData);
+      const response = await axios.post("http://127.0.0.1:8000/api/user/login/", formData);
 
       if (response.status === 200) {
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+
         setMessage("✅ Login successful!");
-        // Example: Save token to localStorage if you get one
-        // localStorage.setItem("token", response.data.token);
         setTimeout(() => {
-          navigate("/set-location"); // Change to your redirect page
-        }, 1500);
+          navigate("/hospital/1"); // ✅ redirect to a real page (for testing: hospital with id=1)
+        }, 1000);
       } else {
         setError("Login failed. Please try again.");
       }
     } catch (err) {
-      setError(
-        err.response?.data?.error || "Invalid email or password. Please try again."
-      );
+      setError(err.response?.data?.error || "Invalid username or password.");
     }
   };
 
@@ -49,27 +48,16 @@ const Login = () => {
     <AuthLayout>
       <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>Login</h2>
 
-      {message && (
-        <div style={{ color: "green", textAlign: "center", marginBottom: "1rem" }}>
-          {message}
-        </div>
-      )}
-      {error && (
-        <div style={{ color: "red", textAlign: "center", marginBottom: "1rem" }}>
-          {error}
-        </div>
-      )}
+      {message && <div style={{ color: "green", textAlign: "center" }}>{message}</div>}
+      {error && <div style={{ color: "red", textAlign: "center" }}>{error}</div>}
 
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-      >
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <input
-          type="email"
-          name="email"
-          placeholder="Email"
+          type="text"
+          name="username"   // ✅ fixed
+          placeholder="Username"
           required
-          value={formData.email}
+          value={formData.username}
           onChange={handleChange}
           style={{ padding: "0.5rem" }}
         />
