@@ -1,4 +1,4 @@
-// src/pages/HospitalDetail.jsx
+
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -22,15 +22,13 @@ const HospitalDetail = () => {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
   if (!hospital) return <p>Loading...</p>;
 
-  // Build a safe image URL
-  let imageUrl = "/placeholder-hospital.jpg"; // file in /public
+  let imageUrl = "/placeholder-hospital.jpg"; 
   if (hospital.image) {
     imageUrl = hospital.image.startsWith("http")
       ? hospital.image
       : `${API_BASE}${hospital.image}`;
   }
 
-  // Doctor string: prefer `doctor`; fall back to joining `doctors[]`
   const doctorText =
     hospital.doctor ||
     (hospital.doctors?.length ? hospital.doctors.map((d) => d.name).join(", ") : "Not listed");
