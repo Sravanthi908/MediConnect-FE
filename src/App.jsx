@@ -5,6 +5,9 @@ import Register from "./pages/Register";
 import HospitalDetail from "./pages/HospitalDetail";
 import BookAppointment from "./pages/BookAppointment";
 
+// ✅ Import hospital dataset
+import data from "./data";
+
 function App() {
   return (
     <Router>
@@ -17,7 +20,6 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* App routes */}
-       
         <Route path="/hospital/:id" element={<HospitalDetail />} />
         <Route path="/book-appointment/:id" element={<BookAppointment />} />
       </Routes>
@@ -26,3 +28,6 @@ function App() {
 }
 
 export default App;
+
+// ✅ Export data (optional, if you want to use it elsewhere directly)
+export { data };
