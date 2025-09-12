@@ -1,60 +1,68 @@
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axiosInstance from '../api/axios';  // ✅ use axiosInstance
+// pages/BookAppointment.jsx
+import { useParams } from 'react-router-dom';
+import hospitals from '../data/hospitals';
+import { useState } from 'react';
 
 function BookAppointment() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
+  const { hospitalId, doctorId } = useParams();
+  const hospital = hospitals.find(h => h.id === parseInt(hospitalId));
+  const doctor = hospital?.doctors.find(d => d.id === parseInt(doctorId));
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axiosInstance.post('book-appointment/', {
-        hospital_id: id,
-        date,
-        time,
-      });
-      alert('✅ Appointment booked successfully');
-      navigate('/appointments'); // redirect to "My Appointments" page
-    } catch (error) {
-      console.error(error);
-      alert('❌ Failed to book appointment');
-    }
+  const [formData, setFormData] = useState({
+    date: '',
+    time: '',
+    patientName: '',
+    contactNumber: '',
+    reason: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Appointment booked:', {
+      hospital: hospital.name,
+      doctor: doctor.name,
+      ...formData
+    });
+    // In a real app, send to backend
+  };
+
+  if (!hospital || !doctor) {
+    return <div>Hospital or Doctor not found</div>;
+  }
+
   return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem", padding: "1rem" }}>
-      <h2>Book Appointment</h2>
-      <input
-        type="date"
-        value={date}
-        onChange={e => setDate(e.target.value)}
-        required
-        style={{ padding: "0.5rem" }}
-      />
-      <input
-        type="time"
-        value={time}
-        onChange={e => setTime(e.target.value)}
-        required
-        style={{ padding: "0.5rem" }}
-      />
-      <button
-        type="submit"
-        style={{
-          backgroundColor: "#28a745",
-          color: "#fff",
-          border: "none",
-          padding: "0.75rem",
-          borderRadius: "5px",
-          cursor: "pointer"
-        }}
-      >
-        Book
-      </button>
-    </form>
+    <div className="container">
+      <h1>Book Appointment</h1>
+      <h2>{hospital.name}</h2>
+      <h3>Dr. {doctor.name} ({doctor.specialization})</h3>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Date:</label>
+          <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+        </div>
+        <div>
+          <label>Time:</label>
+          <input type="time" name="time" value={formData.time} onChange={handleChange} required />
+        </div>
+        <div>
+          <label>Patient Name:</label>
+          <input type="text" name="patientName" value={formData.patientName} onChange={handleChange} required />
+        </div>
+        <div>
+          <label>Contact Number:</label>
+          <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} required />
+        </div>
+        <div>
+          <label>Reason for Visit:</label>
+          <textarea name="reason" value={formData.reason} onChange={handleChange} required></textarea>
+        </div>
+        <button type="submit">Book Appointment</button>
+      </form>
+    </div>
   );
 }
 

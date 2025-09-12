@@ -1,100 +1,38 @@
-import React, { useState } from "react";
-import AuthLayout from "../components/AuthLayout";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+// pages/Login.jsx
+import { useState } from 'react';
 
-const Login = () => {
+function Login() {
   const [formData, setFormData] = useState({
-    username: "",   // ✅ use username instead of email
-    password: "",
+    email: '',
+    password: ''
   });
 
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
-
-    try {
-      const response = await axios.post("http://127.0.0.1:8000/api/user/login/", formData);
-
-      if (response.status === 200) {
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-
-        setMessage("✅ Login successful!");
-        setTimeout(() => {
-          navigate("/hospital/1"); // ✅ redirect to a real page (for testing: hospital with id=1)
-        }, 1000);
-      } else {
-        setError("Login failed. Please try again.");
-      }
-    } catch (err) {
-      setError(err.response?.data?.error || "Invalid username or password.");
-    }
+    console.log('Login form submitted:', formData);
+    // In a real app, send to backend
   };
 
   return (
-    <AuthLayout>
-      <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>Login</h2>
-
-      {message && <div style={{ color: "green", textAlign: "center" }}>{message}</div>}
-      {error && <div style={{ color: "red", textAlign: "center" }}>{error}</div>}
-
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <input
-          type="text"
-          name="username"   // ✅ fixed
-          placeholder="Username"
-          required
-          value={formData.username}
-          onChange={handleChange}
-          style={{ padding: "0.5rem" }}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          value={formData.password}
-          onChange={handleChange}
-          style={{ padding: "0.5rem" }}
-        />
-        <button
-          type="submit"
-          style={{
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            padding: "0.75rem",
-            fontSize: "1rem",
-            borderRadius: "5px",
-            cursor: "pointer",
-            width: "100%",
-          }}
-        >
-          Login
-        </button>
+    <div className="container">
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Email:</label>
+          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+        </div>
+        <div>
+          <label>Password:</label>
+          <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+        </div>
+        <button type="submit">Login</button>
       </form>
-
-      <p style={{ marginTop: "1rem", textAlign: "center" }}>
-        Don’t have an account?{" "}
-        <Link to="/register" style={{ color: "#007bff", fontWeight: "bold" }}>
-          Register
-        </Link>
-      </p>
-    </AuthLayout>
+    </div>
   );
-};
+}
 
 export default Login;

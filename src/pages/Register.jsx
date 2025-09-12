@@ -1,106 +1,56 @@
-import React, { useState } from "react";
-import AuthLayout from "../components/AuthLayout";
-import { Link } from "react-router-dom";
-import axios from "axios";
+// pages/Register.jsx
+import { useState } from 'react';
 
-const Register = () => {
+function Register() {
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    role: 'patient'
   });
 
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-
   const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setMessage("");
-    setError("");
-
-    try {
-      const response = await axios.post("http://127.0.0.1:8000/api/user/register/", formData);
-      if (response.status === 201 || response.status === 200) {
-        setMessage("✅ Registered successfully! You can now login.");
-        setFormData({ username: "", password: "" });
-      } else {
-        setError("Something went wrong. Try again.");
-      }
-    } catch (err) {
-      setError(
-        err.response?.data?.error || "Registration failed. Please check your details."
-      );
-    }
+    console.log('Register form submitted:', formData);
+    // In a real app, send to backend
   };
 
   return (
-    <AuthLayout>
-      <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>Register</h2>
-
-      {message && (
-        <div style={{ color: "green", marginBottom: "1rem", textAlign: "center" }}>
-          {message}
+    <div className="container">
+      <h1>Register</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Name:</label>
+          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
         </div>
-      )}
-      {error && (
-        <div style={{ color: "red", marginBottom: "1rem", textAlign: "center" }}>
-          {error}
+        <div>
+          <label>Email:</label>
+          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
         </div>
-      )}
-
-      <form
-        onSubmit={handleSubmit}
-        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
-      >
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          required
-          value={formData.username}
-          onChange={handleChange}
-          style={{ padding: "0.5rem" }}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          required
-          value={formData.password}
-          onChange={handleChange}
-          style={{ padding: "0.5rem" }}
-        />
-        <button
-          type="submit"
-          style={{
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            padding: "0.75rem",
-            fontSize: "1rem",
-            borderRadius: "5px",
-            cursor: "pointer",
-            width: "100%",
-          }}
-        >
-          Register
-        </button>
+        <div>
+          <label>Password:</label>
+          <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+        </div>
+        <div>
+          <label>Confirm Password:</label>
+          <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} required />
+        </div>
+        <div>
+          <label>Role:</label>
+          <select name="role" value={formData.role} onChange={handleChange}>
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+          </select>
+        </div>
+        <button type="submit">Register</button>
       </form>
-
-      <p style={{ marginTop: "1rem", textAlign: "center" }}>
-        Already have an account?{" "}
-        <Link to="/login" style={{ color: "#007bff", fontWeight: "bold" }}>
-          Login
-        </Link>
-      </p>
-    </AuthLayout>
+    </div>
   );
-};
+}
 
 export default Register;
