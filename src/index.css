@@ -71,3 +71,12 @@ textarea {
 textarea {
   height: 100px;
 }
+/* Add to index.css */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 24px;
+  color: #4CAF50;
+}

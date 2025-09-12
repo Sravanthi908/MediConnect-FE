@@ -1,5 +1,5 @@
-// pages/BookAppointment.jsx
-import { useParams } from 'react-router-dom';
+// src/pages/BookAppointment.jsx
+import { useParams, useNavigate } from 'react-router-dom';
 import hospitals from '../data/hospitals';
 import { useState } from 'react';
 
@@ -7,6 +7,8 @@ function BookAppointment() {
   const { hospitalId, doctorId } = useParams();
   const hospital = hospitals.find(h => h.id === parseInt(hospitalId));
   const doctor = hospital?.doctors.find(d => d.id === parseInt(doctorId));
+  const [isBooked, setIsBooked] = useState(false);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     date: '',
@@ -22,16 +24,35 @@ function BookAppointment() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // In a real app, send to backend
     console.log('Appointment booked:', {
       hospital: hospital.name,
       doctor: doctor.name,
       ...formData
     });
-    // In a real app, send to backend
+    setIsBooked(true);
+    
+    // Redirect after 3 seconds
+    setTimeout(() => {
+      navigate(`/hospital/${hospitalId}`);
+    }, 3000);
   };
 
   if (!hospital || !doctor) {
     return <div>Hospital or Doctor not found</div>;
+  }
+
+  if (isBooked) {
+    return (
+      <div className="container success-container">
+        <div className="success-icon">✓</div>
+        <h1>Appointment Booked Successfully!</h1>
+        <p>Your appointment with Dr. {doctor.name} at {hospital.name} has been confirmed.</p>
+        <p><strong>Date:</strong> {formData.date}</p>
+        <p><strong>Time:</strong> {formData.time}</p>
+        <p>You will be redirected to the hospital details page shortly.</p>
+      </div>
+    );
   }
 
   return (
