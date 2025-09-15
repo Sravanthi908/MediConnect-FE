@@ -12,6 +12,7 @@ function Register() {
     role: 'patient'
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -28,15 +29,15 @@ function Register() {
       return;
     }
     
+    setIsLoading(true);
+    
     try {
-      const success = await register(formData);
-      if (success) {
-        navigate('/');
-      } else {
-        setError('Registration failed');
-      }
+      await register(formData);
+      navigate('/');
     } catch (err) {
-      setError('Registration failed. Please try again.');
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -97,7 +98,9 @@ function Register() {
               <option value="doctor">Doctor</option>
             </select>
           </div>
-          <button type="submit">Register</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Registering...' : 'Register'}
+          </button>
         </form>
         <p>Already have an account? <Link to="/login">Login</Link></p>
       </div>

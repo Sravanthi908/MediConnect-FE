@@ -9,6 +9,7 @@ function Login() {
     password: ''
   });
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -19,16 +20,15 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
     
     try {
-      const success = await login(formData.username, formData.password);
-      if (success) {
-        navigate('/');
-      } else {
-        setError('Invalid username or password');
-      }
+      await login(formData.username, formData.password);
+      navigate('/');
     } catch (err) {
-      setError('Login failed. Please try again.');
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -60,7 +60,9 @@ function Login() {
               placeholder="Enter your password" 
             />
           </div>
-          <button type="submit">Login</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Login'}
+          </button>
         </form>
         <p>Don't have an account? <Link to="/register">Register</Link></p>
       </div>

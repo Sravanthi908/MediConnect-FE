@@ -1,77 +1,91 @@
-/* index.css */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
+/* Add to index.css */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
   background-color: #f5f5f5;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.hospital-list, .doctor-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.hospital-card, .doctor-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px;
+.auth-form {
   background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
 }
 
-.hospital-card img, .doctor-card img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 5px;
+.auth-form h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-form div {
+.auth-form .form-group {
   margin-bottom: 15px;
 }
 
-label {
+.auth-form label {
   display: block;
   margin-bottom: 5px;
+  font-weight: 500;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="date"],
-input[type="time"],
-input[type="tel"],
-select,
-textarea {
+.auth-form input,
+.auth-form select,
+.auth-form textarea {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
 }
 
-textarea {
-  height: 100px;
+.auth-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
 }
-/* Add to index.css */
+
+.auth-form button:hover {
+  background-color: #45a049;
+}
+
+.auth-form button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.auth-form p {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.auth-form a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.auth-form a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #d32f2f;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
 .loading {
   display: flex;
   justify-content: center;

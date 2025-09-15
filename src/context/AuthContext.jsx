@@ -5,7 +5,7 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 // Set up axios defaults
-axios.defaults.baseURL = 'http://localhost:8000/api'; // Update with your Django backend URL
+axios.defaults.baseURL = 'http://localhost:8000/api'; // Django backend URL
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -19,9 +19,9 @@ export function AuthProvider({ children }) {
     // Check if user is already logged in
     const token = localStorage.getItem('token');
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axios.defaults.headers.common['Authorization'] = `Token ${token}`;
       // Get user info from backend
-      axios.get('/user/')
+      axios.get('/profile/')
         .then(response => {
           setCurrentUser(response.data);
         })
@@ -46,12 +46,15 @@ export function AuthProvider({ children }) {
       
       const { token, user } = response.data;
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axios.defaults.headers.common['Authorization'] = `Token ${token}`;
       setCurrentUser(user);
       return true;
     } catch (error) {
       console.error('Login error:', error);
-      return false;
+      if (error.response) {
+        throw new Error(error.response.data.error || 'Login failed');
+      }
+      throw new Error('Network error. Please try again.');
     }
   };
 
@@ -61,12 +64,15 @@ export function AuthProvider({ children }) {
       
       const { token, user } = response.data;
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axios.defaults.headers.common['Authorization'] = `Token ${token}`;
       setCurrentUser(user);
       return true;
     } catch (error) {
       console.error('Registration error:', error);
-      return false;
+      if (error.response) {
+        throw new Error(error.response.data.error || 'Registration failed');
+      }
+      throw new Error('Network error. Please try again.');
     }
   };
 
