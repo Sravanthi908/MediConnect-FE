@@ -37,6 +37,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  // Login function
   const login = async (username, password) => {
     try {
       const response = await axios.post('/login/', {
@@ -60,8 +61,16 @@ export function AuthProvider({ children }) {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post('/register/', userData);
-      
+      const payload = {
+        username: userData.username,
+        password: userData.password,
+        confirm_password: userData.confirmPassword,
+        full_name: userData.name,   // map correctly from Register.jsx
+        role: userData.role,
+      };
+
+      const response = await axios.post('/register/', payload);
+
       const { token, user } = response.data;
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Token ${token}`;
@@ -70,12 +79,15 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error('Registration error:', error);
       if (error.response) {
-        throw new Error(error.response.data.error || 'Registration failed');
+        throw new Error(
+          error.response.data.error || JSON.stringify(error.response.data)
+        );
       }
       throw new Error('Network error. Please try again.');
     }
   };
 
+ 
   const logout = () => {
     localStorage.removeItem('token');
     delete axios.defaults.headers.common['Authorization'];
