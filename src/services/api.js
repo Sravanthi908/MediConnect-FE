@@ -1,25 +1,75 @@
-// src/services/api.js
-import { HOSPITALS } from "../data/hospitals.js";
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-export async function fetchNearbyHospitals() {
-  return Promise.resolve(HOSPITALS);
-}
+const api = {
+  get: async (endpoint) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` })
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('API request failed');
+    }
+    
+    return response.json();
+  },
+  
+  post: async (endpoint, data) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` })
+      },
+      body: JSON.stringify(data)
+    });
+    
+    if (!response.ok) {
+      throw new Error('API request failed');
+    }
+    
+    return response.json();
+  },
+  
+  put: async (endpoint, data) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` })
+      },
+      body: JSON.stringify(data)
+    });
+    
+    if (!response.ok) {
+      throw new Error('API request failed');
+    }
+    
+    return response.json();
+  },
+  
+  delete: async (endpoint) => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_URL}${endpoint}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` })
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('API request failed');
+    }
+    
+    return response.json();
+  }
+};
 
-export async function fetchHospitalById(id) {
-  return Promise.resolve(HOSPITALS.find(h => h.id === id));
-}
-
-// ✅ Add this
-export async function bookAppointment(hospitalId, doctorId, date, time) {
-  // For now we mock the booking – later you can call your Django backend here
-  return Promise.resolve({
-    success: true,
-    message: "Appointment booked successfully!",
-    data: {
-      hospitalId,
-      doctorId,
-      date,
-      time,
-    },
-  });
-}
+export default api;

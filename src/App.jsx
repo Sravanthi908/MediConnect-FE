@@ -1,38 +1,71 @@
 // src/App.jsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
-import NearbyHospitals from './pages/NearbyHospitals';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import HospitalDetail from './pages/HospitalDetail';
-import BookAppointment from './pages/BookAppointment';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AppProvider } from './context/AppContext';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import DashboardPage from './pages/DashboardPage';
+import AppointmentsPage from './pages/AppointmentsPage';
+import DoctorProfilePage from './pages/DoctorProfilePage';
+import BookingPage from './pages/BookingPage';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
+import './styles/global.css';
+import './styles/components.css';
+import './styles/pages.css';
+import './styles/auth.css';
 
 function App() {
   return (
-    <AuthProvider>
+    <AppProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={
-            <ProtectedRoute>
-              <NearbyHospitals />
-            </ProtectedRoute>
-          } />
-          <Route path="/hospital/:id" element={
-            <ProtectedRoute>
-              <HospitalDetail />
-            </ProtectedRoute>
-          } />
-          <Route path="/book-appointment/:hospitalId/:doctorId" element={
-            <ProtectedRoute>
-              <BookAppointment />
-            </ProtectedRoute>
-          } />
-        </Routes>
+        <div className="app">
+          <Header />
+          <main className="main-content">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              
+              {/* Protected Routes */}
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/appointments" element={
+                <ProtectedRoute>
+                  <AppointmentsPage />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/doctor/:id" element={
+                <ProtectedRoute>
+                  <DoctorProfilePage />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/book/:id" element={
+                <ProtectedRoute>
+                  <BookingPage />
+                </ProtectedRoute>
+              } />
+              
+              {/* Fallback Route */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </BrowserRouter>
-    </AuthProvider>
+    </AppProvider>
   );
 }
 
