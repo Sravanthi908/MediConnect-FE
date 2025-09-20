@@ -1,85 +1,53 @@
-import { useState } from 'react';
-import Header from '../components/layout/Header';
-import Sidebar from '../components/layout/Sidebar';
-import AppointmentCard from '../components/appointments/AppointmentCard';
-import CalendarView from '../components/appointments/CalendarView';
-import { useAppointments } from '../hooks/useAppointments';
-import Loader from '../components/ui/Loader';
+// src/pages/AppointmentsPage.jsx
+import React from "react";
+import Sidebar from "../components/layout/Sidebar"; // Default export
+import DoctorCard from "../components/doctors/DoctorCard"; // Default export
 
 const AppointmentsPage = () => {
-  const { appointments, loading } = useAppointments();
-  const [view, setView] = useState('list'); // 'list' or 'calendar'
-
-  const upcomingAppointments = appointments?.filter(
-    apt => new Date(apt.date) > new Date()
-  );
-  
-  const pastAppointments = appointments?.filter(
-    apt => new Date(apt.date) <= new Date()
-  );
+  // Example data for appointments/doctors
+  const appointments = [
+    {
+      id: 1,
+      doctor: { name: "Dr. Smith", specialty: "Cardiologist", hospital: "City Hospital" },
+      date: "2025-09-25",
+      time: "10:00 AM",
+    },
+    {
+      id: 2,
+      doctor: { name: "Dr. Jane", specialty: "Dermatologist", hospital: "Sunrise Clinic" },
+      date: "2025-09-26",
+      time: "02:00 PM",
+    },
+    {
+      id: 3,
+      doctor: { name: "Dr. Lee", specialty: "Pediatrician", hospital: "Metro Clinic" },
+      date: "2025-09-27",
+      time: "11:00 AM",
+    },
+  ];
 
   return (
-    <div className="appointments-page">
-      <Header />
-      <div className="appointments-container">
-        <Sidebar />
-        <main className="appointments-content">
-          <div className="page-header">
-            <h1>My Appointments</h1>
-            <div className="view-toggle">
-              <button 
-                className={view === 'list' ? 'active' : ''} 
-                onClick={() => setView('list')}
-              >
-                List View
-              </button>
-              <button 
-                className={view === 'calendar' ? 'active' : ''} 
-                onClick={() => setView('calendar')}
-              >
-                Calendar View
-              </button>
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <Sidebar />
+
+      {/* Main Content */}
+      <div className="flex-1 p-6 bg-gray-50">
+        <h1 className="text-2xl font-bold mb-4">Your Appointments</h1>
+        <div className="grid grid-cols-3 gap-4">
+          {appointments.map((appointment) => (
+            <div
+              key={appointment.id}
+              className="appointment-card p-4 bg-white rounded-lg shadow-md"
+            >
+              <DoctorCard doctor={appointment.doctor} />
+              <p className="mt-2 text-gray-600">
+                Date: {appointment.date} <br />
+                Time: {appointment.time}
+              </p>
             </div>
-          </div>
-
-          {loading ? (
-            <Loader />
-          ) : view === 'calendar' ? (
-            <CalendarView appointments={appointments} />
-          ) : (
-            <>
-              <div className="appointments-section">
-                <h2>Upcoming Appointments</h2>
-                {upcomingAppointments?.length > 0 ? (
-                  <div className="appointments-list">
-                    {upcomingAppointments.map(appointment => (
-                      <AppointmentCard key={appointment.id} appointment={appointment} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="empty-state">
-                    <p>No upcoming appointments</p>
-                  </div>
-                )}
-              </div>
-
-              <div className="appointments-section">
-                <h2>Past Appointments</h2>
-                {pastAppointments?.length > 0 ? (
-                  <div className="appointments-list">
-                    {pastAppointments.map(appointment => (
-                      <AppointmentCard key={appointment.id} appointment={appointment} />
-                    ))}
-                  </div>
-                ) : (
-                  <div className="empty-state">
-                    <p>No past appointments</p>
-                  </div>
-                )}
-              </div>
-            </>
-          )}
-        </main>
+          ))}
+        </div>
       </div>
     </div>
   );

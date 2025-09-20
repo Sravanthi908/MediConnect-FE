@@ -1,42 +1,29 @@
-and also i want login page and register pagemediconnect-frontend/
-├── src/
-│   ├── components/
-│   │   ├── appointments/
-│   │   │   ├── AppointmentCard.jsx
-│   │   │   ├── BookingForm.jsx
-│   │   │   ├── CalendarView.jsx
-│   │   │   └── TimeSlotPicker.jsx
-│   │   ├── doctors/
-│   │   │   ├── DoctorCard.jsx
-│   │   │   ├── DoctorProfile.jsx
-│   │   │   └── DoctorSearch.jsx
-│   │   ├── layout/
-│   │   │   ├── Header.jsx
-│   │   │   ├── Sidebar.jsx
-│   │   │   └── Footer.jsx
-│   │   └── ui/
-│   │       ├── Button.jsx
-│   │       ├── Input.jsx
-│   │       ├── Modal.jsx
-│   │       └── Loader.jsx
-│   ├── pages/
-│   │   ├── AppointmentsPage.jsx
-│   │   ├── DoctorProfilePage.jsx
-│   │   ├── BookingPage.jsx
-│   │   └── DashboardPage.jsx
-│   ├── services/
-│   │   ├── api.js
-│   │   └── authService.js
-│   ├── hooks/
-│   │   ├── useAppointments.js
-│   │   └── useDoctors.js
-│   ├── context/
-│   │   └── AppContext.jsx
-│   ├── utils/
-│   │   ├── dateUtils.js
-│   │   └── validation.js
-│   └── styles/
-│       ├── global.css
-│       ├── components.css
-│       └── pages.css
-└── public/ 
+// src/services/authService.js
+
+// Key used in localStorage
+const USER_KEY = "user";
+
+const authService = {
+  // Save the logged-in user to localStorage
+  login: (userData) => {
+    localStorage.setItem(USER_KEY, JSON.stringify(userData));
+  },
+
+  // Get the currently logged-in user
+  getCurrentUser: () => {
+    const user = localStorage.getItem(USER_KEY);
+    return user ? JSON.parse(user) : null;
+  },
+
+  // Remove user from localStorage (logout)
+  logout: () => {
+    localStorage.removeItem(USER_KEY);
+  },
+
+  // Optional: Check if a user is authenticated
+  isAuthenticated: () => {
+    return !!localStorage.getItem(USER_KEY);
+  },
+};
+
+export default authService;
