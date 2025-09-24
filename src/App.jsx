@@ -1,65 +1,33 @@
-// src/App.jsx
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AppProvider } from './context/AppContext';
-import ProtectedRoute from './components/auth/ProtectedRoute';
-
-// Pages
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';
-import AppointmentsPage from './pages/AppointmentsPage';
-import DoctorProfilePage from './pages/DoctorProfilePage';
-import BookingPage from './pages/BookingPage';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
+import Header from './components/Header'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Dashboard from './pages/Dashboard'
+import ProtectedRoute from './components/auth/ProtectedRoute'
 
 function App() {
   return (
-    <AppProvider>
+    <AuthProvider>
       <Router>
+        <Header />
         <Routes>
-          {/* Public Routes */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-
-          {/* Protected Routes */}
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route 
             path="/dashboard" 
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <Dashboard />
               </ProtectedRoute>
             } 
           />
-          <Route 
-            path="/appointments" 
-            element={
-              <ProtectedRoute>
-                <AppointmentsPage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/doctor/:id" 
-            element={
-              <ProtectedRoute>
-                <DoctorProfilePage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/booking/:doctorId" 
-            element={
-              <ProtectedRoute>
-                <BookingPage />
-              </ProtectedRoute>
-            } 
-          />
-
-          {/* Default Redirect */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>
-    </AppProvider>
-  );
+    </AuthProvider>
+  )
 }
 
-export default App;
+export default App
