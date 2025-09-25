@@ -1,47 +1,61 @@
-import { createContext, useContext, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import { authService } from '../services/authService';
 
-const AuthContext = createContext()
+const AuthContext = createContext();
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      setUser({ token })
-    }
-    setLoading(false)
-  }, [])
+    const unsubscribe = authService.onAuthStateChanged((user) => {
+      setUser(user);
+      setLoading(false);
+    });
 
-  const login = async (credentials) => {
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials)
-    })
-    const data = await response.json()
-    if (data.token) {
-      localStorage.setItem('token', data.token)
-      setUser({ token: data.token })
-      navigate('/dashboard')
-    }
-    return data
-  }
+    return unsubscribe;
+  }, []);
 
-  const logout = () => {
-    localStorage.removeItem('token')
-    setUser(null)
-    navigate('/login')
-  }
+  const login = async (email, password) => {
+    try {
+      const user = await authService.login(email, password);
+      setUser(user);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  const register = async (name, email, password) => {
+    try {
+      const user = await authService.register(name, email, password);
+      setUser(user);
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  const logout = async () => {
+    await authService.logout();
+    setUser(null);
+  };
+
+  const value = {
+    user,
+    login,
+    register,
+    logout,
+    loading
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-  )
-}
-
-export const useAuth = () => useContext(AuthContext)
+  );
+};

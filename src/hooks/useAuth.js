@@ -1,3 +1,3 @@
-import { useAuth } from '../context/AuthContext'
+import { useAuth } from '../context/AuthContext';
 
-export default useAuth
+export default useAuth;

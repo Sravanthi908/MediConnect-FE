@@ -1,0 +1,95 @@
+.appointments-page {
+  padding: 2rem 0;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: #718096;
+  font-size: 1.1rem;
+}
+
+.empty-appointments {
+  text-align: center;
+  padding: 3rem;
+}
+
+.empty-appointments-content {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.empty-appointments-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.empty-appointments h2 {
+  font-size: 1.8rem;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.empty-appointments p {
+  color: #4a5568;
+  margin-bottom: 2rem;
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.appointment-card {
+  padding: 1.5rem;
+}
+
+.appointment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.appointment-header h3 {
+  font-size: 1.3rem;
+  color: #2d3748;
+  margin: 0;
+}
+
+.appointment-details {
+  margin-bottom: 1.5rem;
+}
+
+.appointment-detail {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+.detail-label {
+  font-weight: 600;
+  width: 100px;
+  color: #4a5568;
+}
+
+.appointment-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #718096;
+}

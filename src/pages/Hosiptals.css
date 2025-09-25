@@ -1,0 +1,135 @@
+.hospitals-page {
+  padding: 2rem 0;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: #718096;
+  font-size: 1.1rem;
+}
+
+.hospitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.hospital-card {
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hospital-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.hospital-image {
+  height: 200px;
+  overflow: hidden;
+}
+
+.hospital-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.hospital-card:hover .hospital-image img {
+  transform: scale(1.05);
+}
+
+.hospital-content {
+  padding: 1.5rem;
+}
+
+.hospital-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.hospital-header h3 {
+  font-size: 1.3rem;
+  color: #2d3748;
+  margin: 0;
+}
+
+.hospital-rating {
+  display: flex;
+  align-items: center;
+  background-color: #f0fff4;
+  color: #38a169;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.rating-star {
+  margin-right: 0.25rem;
+}
+
+.hospital-location {
+  color: #718096;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.hospital-description {
+  color: #4a5568;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.hospital-specialties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.hospital-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.book-appointment-btn {
+  flex: 1;
+  background-color: #38a169;
+  color: white;
+}
+
+.book-appointment-btn:hover {
+  background-color: #2f855a;
+}
+
+.view-details-btn {
+  flex: 1;
+  border-color: #3182ce;
+  color: #3182ce;
+}
+
+.view-details-btn:hover {
+  background-color: #3182ce;
+  color: white;
+}
+
+.loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #718096;
+}

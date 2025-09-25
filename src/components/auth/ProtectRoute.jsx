@@ -1,11 +1,21 @@
-import { Navigate } from 'react-router-dom'
-import { useAuth } from '../../hooks/useAuth'
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import './ProtectedRoute.css';
 
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth()
-  
-  if (loading) return <div>Loading...</div>
-  return user ? children : <Navigate to="/login" />
-}
+  const { user, loading } = useAuth();
 
-export default ProtectedRoute
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  return user ? children : <Navigate to="/login" />;
+};
+
+export default ProtectedRoute;

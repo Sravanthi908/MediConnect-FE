@@ -1,11 +1,14 @@
-import React from 'react'
+import React from 'react';
+import './Badge.css';
 
-const Badge = ({ children }) => {
+const Badge = ({ children, variant = 'primary', className = '', ...props }) => {
+  const classes = `badge badge-${variant} ${className}`;
+  
   return (
-    <span className="inline-block px-2 py-1 text-xs font-semibold bg-gray-200 rounded">
+    <span className={classes} {...props}>
       {children}
     </span>
-  )
-}
+  );
+};
 
-export default Badge
+export default Badge;

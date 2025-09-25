@@ -1,0 +1,100 @@
+.hospital-detail-page {
+  padding: 2rem 0;
+}
+
+.hospital-detail-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.hospital-detail-image {
+  height: 500px;
+}
+
+.hospital-detail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hospital-detail-content {
+  padding: 2rem;
+}
+
+.hospital-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.hospital-detail-header h1 {
+  font-size: 2rem;
+  color: #2d3748;
+  margin: 0;
+}
+
+.hospital-location {
+  color: #4a5568;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.hospital-specialties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.hospital-description {
+  margin-bottom: 2rem;
+}
+
+.hospital-description h2 {
+  font-size: 1.5rem;
+  color: #2d3748;
+  margin-bottom: 1rem;
+}
+
+.hospital-description p {
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+.hospital-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.book-appointment-btn {
+  flex: 1;
+  background-color: #38a169;
+  color: white;
+}
+
+.book-appointment-btn:hover {
+  background-color: #2f855a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.back-btn {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .hospital-detail-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .hospital-detail-image {
+    height: 300px;
+  }
+}

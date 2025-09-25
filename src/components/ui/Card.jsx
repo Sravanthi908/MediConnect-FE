@@ -1,11 +1,14 @@
-import React from 'react'
+import React from 'react';
+import './Card.css';
 
-const Card = ({ children, className }) => {
+const Card = ({ children, className = '', ...props }) => {
+  const classes = `card ${className}`;
+  
   return (
-    <div className={`bg-white shadow rounded-lg ${className}`}>
+    <div className={classes} {...props}>
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

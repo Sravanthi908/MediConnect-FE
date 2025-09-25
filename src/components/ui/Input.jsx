@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
+import './Input.css';
 
-const Input = ({ className, ...props }) => {
+const Input = ({ className = '', ...props }) => {
+  const classes = `input ${className}`;
+  
   return (
-    <input
-      className={`w-full px-3 py-2 border border-gray-300 rounded ${className}`}
-      {...props}
-    />
-  )
-}
+    <input className={classes} {...props} />
+  );
+};
 
-export default Input
+export default Input;
