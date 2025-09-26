@@ -29,12 +29,12 @@ const Dashboard = () => {
         
         <Card className="dashboard-card">
           <div className="card-header">
-            <h3>Saved Hospitals</h3>
+            <h3>Favorite Hospitals</h3>
             <Badge variant="secondary">3</Badge>
           </div>
           <div className="card-content">
-            <p>You have 3 hospitals in your cart</p>
-            <Button variant="outline">View Cart</Button>
+            <p>You have 3 favorite hospitals</p>
+            <Button variant="outline">View Hospitals</Button>
           </div>
         </Card>
         

@@ -10,7 +10,6 @@ import Dashboard from './pages/Dashboard';
 import Hospitals from './pages/Hospitals';
 import HospitalDetail from './pages/HospitalDetail';
 import Appointments from './pages/Appointments';
-import Cart from './pages/Cart';
 import './App.css';
 
 function App() {
@@ -27,7 +26,6 @@ function App() {
               <Route path="/hospitals" element={<Hospitals />} />
               <Route path="/hospital/:id" element={<HospitalDetail />} />
               <Route path="/appointments" element={<Appointments />} />
-              <Route path="/cart" element={<Cart />} />
               <Route 
                 path="/dashboard" 
                 element={

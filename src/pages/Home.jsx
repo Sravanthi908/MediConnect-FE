@@ -11,7 +11,7 @@ const Home = () => {
         <div className="container hero-content">
           <div className="hero-text">
             <h1>Your Health, Our Priority</h1>
-            <p>Find the best hospitals, book appointments, and manage your healthcare needs all in one place.</p>
+            <p>Find the best hospitals and book appointments with ease.</p>
             <div className="hero-buttons">
               <Link to="/hospitals">
                 <Button size="lg">Find Hospitals</Button>
@@ -44,9 +44,9 @@ const Home = () => {
               <p>Book appointments with just a few clicks and manage your schedule effortlessly.</p>
             </Card>
             <Card className="feature-card">
-              <div className="feature-icon">🛒</div>
-              <h3>Save to Cart</h3>
-              <p>Add hospitals and services to your cart for future reference and easy booking.</p>
+              <div className="feature-icon">🩺</div>
+              <h3>Quality Healthcare</h3>
+              <p>Access to the best medical professionals and facilities for your healthcare needs.</p>
             </Card>
           </div>
         </div>

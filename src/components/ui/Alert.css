@@ -2,6 +2,7 @@
   padding: 1rem;
   border-radius: 4px;
   margin-bottom: 1rem;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .alert-success {
@@ -20,4 +21,9 @@
   background-color: #ebf8ff;
   color: #3182ce;
   border: 1px solid #90cdf4;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -12,6 +12,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -20,11 +21,15 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSuccess('');
 
     const result = await login(email, password);
     
     if (result.success) {
-      navigate('/dashboard');
+      setSuccess('Login successful! Redirecting to dashboard...');
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1500);
     } else {
       setError(result.error);
     }
@@ -41,6 +46,7 @@ const Login = () => {
         </div>
         
         {error && <Alert variant="danger">{error}</Alert>}
+        {success && <Alert variant="success">{success}</Alert>}
         
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">

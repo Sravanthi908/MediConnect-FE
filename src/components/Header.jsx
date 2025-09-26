@@ -20,10 +20,6 @@ const Header = () => {
           <Link to="/" className="nav-link">Home</Link>
           <Link to="/hospitals" className="nav-link">Hospitals</Link>
           <Link to="/appointments" className="nav-link">Appointments</Link>
-          <Link to="/cart" className="nav-link cart-link">
-            <span className="cart-icon">🛒</span>
-            <span className="cart-count">0</span>
-          </Link>
         </nav>
         
         <div className="auth-buttons">

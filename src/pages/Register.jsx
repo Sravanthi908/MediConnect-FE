@@ -14,6 +14,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -28,11 +29,15 @@ const Register = () => {
     
     setLoading(true);
     setError('');
+    setSuccess('');
 
     const result = await register(name, email, password);
     
     if (result.success) {
-      navigate('/dashboard');
+      setSuccess('Registration successful! Welcome to MediConnect. Redirecting to dashboard...');
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1500);
     } else {
       setError(result.error);
     }
@@ -49,6 +54,7 @@ const Register = () => {
         </div>
         
         {error && <Alert variant="danger">{error}</Alert>}
+        {success && <Alert variant="success">{success}</Alert>}
         
         <form onSubmit={handleSubmit} className="register-form">
           <div className="form-group">
