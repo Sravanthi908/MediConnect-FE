@@ -1,88 +1,87 @@
-// Mock authentication service
+const API_URL = 'http://localhost:5000/api';
+
 const authService = {
-  // Mock user data
-  users: [
-    { id: 1, name: 'John Doe', email: 'john@example.com', password: 'password123' },
-    { id: 2, name: 'Jane Smith', email: 'jane@example.com', password: 'password123' }
-  ],
-  
-  // Current user
-  currentUser: null,
-  
-  // Login function
-  login: async (email, password) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const user = authService.users.find(
-          u => u.email === email && u.password === password
-        );
-        
-        if (user) {
-          authService.currentUser = { ...user };
-          localStorage.setItem('user', JSON.stringify(authService.currentUser));
-          resolve(authService.currentUser);
-        } else {
-          reject(new Error('Invalid email or password'));
-        }
-      }, 1000);
-    });
-  },
-  
-  // Register function
-  register: async (name, email, password) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const existingUser = authService.users.find(u => u.email === email);
-        
-        if (existingUser) {
-          reject(new Error('Email already in use'));
-        } else {
-          const newUser = {
-            id: authService.users.length + 1,
-            name,
-            email,
-            password
-          };
-          
-          authService.users.push(newUser);
-          authService.currentUser = { ...newUser };
-          localStorage.setItem('user', JSON.stringify(authService.currentUser));
-          resolve(authService.currentUser);
-        }
-      }, 1000);
-    });
-  },
-  
-  // Logout function
-  logout: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        authService.currentUser = null;
-        localStorage.removeItem('user');
-        resolve();
-      }, 500);
-    });
-  },
-  
-  // Get current user
-  getCurrentUser: () => {
-    if (!authService.currentUser) {
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        authService.currentUser = JSON.parse(userData);
+  register: async (fullName, email, password) => {
+    try {
+      const response = await fetch(`${API_URL}/users/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fullName, email, password }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Registration failed');
       }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Registration error:', error);
+      throw error;
     }
-    return authService.currentUser;
+  },
+
+  login: async (email, password) => {
+    try {
+      const response = await fetch(`${API_URL}/users/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
+      }
+      
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+      return data.user;
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
+  },
+
+  getCurrentUser: () => {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.user;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  logout: () => {
+    localStorage.removeItem('token');
   },
   
-  // Auth state change listener
-  onAuthStateChanged: (callback) => {
-    const user = authService.getCurrentUser();
-    callback(user);
-    
-    // Return unsubscribe function
-    return () => {};
+  getHospitals: async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_URL}/hospitals`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch hospitals');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching hospitals:', error);
+      throw error;
+    }
   }
 };
 
-export default authService;
+export { authService };

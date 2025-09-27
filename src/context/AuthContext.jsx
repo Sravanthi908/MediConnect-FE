@@ -1,47 +1,60 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authService } from '../services/authService';
 
 const AuthContext = createContext();
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = authService.onAuthStateChanged((user) => {
-      setUser(user);
-      setLoading(false);
-    });
+    const checkAuthStatus = () => {
+      try {
+        const currentUser = authService.getCurrentUser();
+        setUser(currentUser);
+      } catch (err) {
+        console.error('Auth check error:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return unsubscribe;
+    checkAuthStatus();
   }, []);
 
   const login = async (email, password) => {
+    setLoading(true);
+    setError(null);
     try {
-      const user = await authService.login(email, password);
-      setUser(user);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error.message };
+      const loggedInUser = await authService.login(email, password);
+      setUser(loggedInUser);
+      return loggedInUser;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const register = async (name, email, password) => {
+  const register = async (fullName, email, password) => {
+    setLoading(true);
+    setError(null);
     try {
-      const user = await authService.register(name, email, password);
-      setUser(user);
-      return { success: true };
-    } catch (error) {
-      return { success: false, error: error.message };
+      const newUser = await authService.register(fullName, email, password);
+      setUser(newUser);
+      return newUser;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const logout = async () => {
-    await authService.logout();
+  const logout = () => {
+    authService.logout();
     setUser(null);
   };
 
@@ -50,12 +63,14 @@ export const AuthProvider = ({ children }) => {
     login,
     register,
     logout,
-    loading
+    loading,
+    error,
+    isAuthenticated: !!user
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = () => {
+  return useContext(AuthContext);
 };

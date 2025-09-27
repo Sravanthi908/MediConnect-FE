@@ -1,61 +1,45 @@
-import React, { useState, useEffect } from "react";
-import "./Hospitals.css";
+import React, { useState, useEffect } from 'react';
+import { authService } from '../services/authService';
 
 const Hospitals = () => {
   const [hospitals, setHospitals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Example: fetch hospitals from backend API
   useEffect(() => {
     const fetchHospitals = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/hospitals/"); // 🔹 change URL to your Django backend
-        const data = await response.json();
+        setLoading(true);
+        const data = await authService.getHospitals();
         setHospitals(data);
-      } catch (error) {
-        console.error("Error fetching hospitals:", error);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchHospitals();
   }, []);
 
-  const handleViewDetails = (hospital) => {
-    alert(`Viewing details for ${hospital.name}`);
-    // 👉 You can navigate to a HospitalDetail page here
-    // e.g., useNavigate(`/hospitals/${hospital.id}`)
-  };
-
-  const handleBookAppointment = (hospital) => {
-    alert(`Booking appointment at ${hospital.name}`);
-    // 👉 You can navigate to a BookAppointment page here
-  };
+  if (loading) return <div>Loading hospitals...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="hospitals-container">
-      <h2>Nearby Hospitals</h2>
+      <h2>Hospitals</h2>
       {hospitals.length === 0 ? (
-        <p>No hospitals available.</p>
+        <p>No hospitals found</p>
       ) : (
-        hospitals.map((hospital) => (
-          <div key={hospital.id} className="hospital-card">
-            <div className="hospital-name">{hospital.name}</div>
-            <div className="hospital-address">{hospital.address}</div>
-            <div className="hospital-actions">
-              <button
-                className="view-btn"
-                onClick={() => handleViewDetails(hospital)}
-              >
-                View Details
-              </button>
-              <button
-                className="book-btn"
-                onClick={() => handleBookAppointment(hospital)}
-              >
-                Book Appointment
-              </button>
-            </div>
-          </div>
-        ))
+        <ul className="hospitals-list">
+          {hospitals.map(hospital => (
+            <li key={hospital.id} className="hospital-item">
+              <h3>{hospital.name}</h3>
+              <p>{hospital.address}</p>
+              <p>{hospital.phone}</p>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
